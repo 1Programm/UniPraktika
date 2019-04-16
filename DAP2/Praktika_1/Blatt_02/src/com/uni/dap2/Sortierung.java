@@ -3,14 +3,14 @@ package com.uni.dap2;
 public class Sortierung {
 	
 	private static final String SORT_MERGE = "merge";		//Name for merge sort mode
-	private static final String SORT_INSERT = "insert"; 	//Name for insert sort mode
+	private static final String SORT_INSERT = "insert"; 		//Name for insert sort mode
 	
 	private static final String FILL_RANDOM = "rand";		//Name for random filling mode
 	private static final String FILL_UP = "auf";			//Name for upwards filling mode
 	private static final String FILL_DOWN = "ab";			//Name for downwards filling mode
 	
-	private static final String DEFAULT_SORT = SORT_MERGE; 	//Default sort mode
-	private static final String DEFAULT_FILL = FILL_RANDOM; //Default filling mode
+	private static final String DEFAULT_SORT = SORT_MERGE; 		//Default sort mode
+	private static final String DEFAULT_FILL = FILL_RANDOM; 	//Default filling mode
 	
 	/*
 	 * The valid parameter message
