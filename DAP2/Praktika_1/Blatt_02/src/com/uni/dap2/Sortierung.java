@@ -351,39 +351,43 @@ public class Sortierung {
 			error("Invalid argument 'right' (" + right + ")!");
 		}
 
-		int nextIndex = left;
-		int rightIndex = middleLeft + 1;
-		int leftIndex = left;
+		int nextIndex = left;								//Initializes a pointer nextIndex which points to the next free index in tmpArray
+		int rightIndex = middleLeft + 1;					//Initializes a pointer rightIndex which always points to the next value of the right half which was not merged yet
+		int leftIndex = left;								//Initializes a pointer leftIndex which always points to the next value of the left half which was not merged yet
 
-		while (leftIndex <= middleLeft && rightIndex <= right) { 
+		while (leftIndex <= middleLeft && rightIndex <= right) { 	//Check if the left and the right part still have values which need to be merged
 
-			if (array[leftIndex] <= array[rightIndex]) {
-
-				tmpArray[nextIndex] = array[leftIndex];
+			if (array[leftIndex] <= array[rightIndex]) {			//Value of the left part is smaller than or equal to the value of the right part
+				
+				tmpArray[nextIndex] = array[leftIndex];		//Saves the smallest value of the left part which is not already merged in the right position in tmpArray		
 				leftIndex++;
 
 			} else {
 
-				tmpArray[nextIndex] = array[rightIndex];
+				tmpArray[nextIndex] = array[rightIndex];		////Saves the smallest value of the right part which is not already merged in the right position in tmpArray	
 				rightIndex++;
 			}
 
 			nextIndex++;
 
 		}
+		
+		/*
+		 * As the while-loop above only terminates if either the left of the right part is empty, one of them is definitely empty at this point 
+		 */
 
-		if (rightIndex <= right) {
+		if (rightIndex <= right) {			//Checks if there are still values left in the left part which still need to be merged
 
-			for (int i = rightIndex; i <= right; i++) {
+			for (int i = rightIndex; i <= right; i++) {		//Puts all the remaining values of the left part in their corresponding order into the tmpArray
 
 				tmpArray[nextIndex] = array[i];
 				nextIndex++;
 
 			}
 
-		} else if (leftIndex <= middleLeft) {
+		} else if (leftIndex <= middleLeft) {		//Checks if there are still values left in the right part which still need to be merged
 
-			for (int i = leftIndex; i <= middleLeft; i++) {
+			for (int i = leftIndex; i <= middleLeft; i++) {		//Puts all the remaining values of the right part in their corresponding order into the tmpArray
 
 				tmpArray[nextIndex] = array[i];
 				nextIndex++;
@@ -391,9 +395,9 @@ public class Sortierung {
 
 		}
 
-		for (int i = left; i <= right; i++) {
+		for (int i = left; i <= right; i++) {		//Rewrites all the values from tmpArray back into the main array to replace the unmerged values in the main array with the merged values
 
-			array[i] = tmpArray[i];
+			array[i] = tmpArray[i];		
 
 		}
 
