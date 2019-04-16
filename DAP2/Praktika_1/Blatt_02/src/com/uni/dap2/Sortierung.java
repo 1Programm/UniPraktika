@@ -1,110 +1,129 @@
 package com.uni.dap2;
 
 public class Sortierung {
+	
+	private static final String SORT_MERGE = "merge";		//Name for merge sort mode
+	private static final String SORT_INSERT = "insert"; 	//Name for insert sort mode
+	
+	private static final String FILL_RANDOM = "rand";		//Name for random filling mode
+	private static final String FILL_UP = "auf";			//Name for upwards filling mode
+	private static final String FILL_DOWN = "ab";			//Name for downwards filling mode
+	
+	private static final String DEFAULT_SORT = SORT_MERGE; 	//Default sort mode
+	private static final String DEFAULT_FILL = FILL_RANDOM; //Default filling mode
+	
+	/*
+	 * The valid parameter message
+	 * Something like: "Please use 'java Sortierung (int)number [insert|merge [auf|ab|rand]]' with number greater zero!"
+	 */
+	private static final String VALID_PARAMETER_MESSAGE = 
+			"Please use 'java Sortierung (int)number [" + SORT_INSERT + "|" + SORT_MERGE + " [" + FILL_UP + "|" + FILL_DOWN + "|" + FILL_RANDOM + "]]' with number greater zero!";
 
-	private static long tStart, tEnd, mSecs;
-	private static String sortingType, fillingType;	//sortingType enthält die Sortierungsart, fillingType enthält die Methode, wie das Array gefüllt werden soll
-
+	
 	public static void main(String[] args) {
 
-		int[] array = null;
+		int[] array = null;	//Array which will contain the sorted numbers
 
 		
-		if (args.length > 3 || args.length < 1) {	//Prüfen, ob eine ungültige Arraygröße eingegeben wurde
+		if (args.length > 3 || args.length < 1) {	//Test for invalid parameter length
 			error("Wrong number of parameters!");
 		}
 
-		int size = 0;
-
 		try {
-
-			size = Integer.parseInt(args[0]);	
-			if (size > 0) {
-				array = new int[size];
+			
+			int size = Integer.parseInt(args[0]); 	//Parse first parameter to an integer
+			
+			if (size > 0) {							//Test valid size range
+				
+				array = new int[size];				//Initialize array with valid size
+				
 			} else {
 
-				error("Invalid array size! Please use 'java Sortierung (int)number [insert|merge [auf|ab|rand]]' with number greater zero!");
+				error("Invalid array size! " + VALID_PARAMETER_MESSAGE);
 
 			}
 
-		} catch (NumberFormatException nfe) {
+		} catch (NumberFormatException nfe) {		//Catch Exception if first parameter is not a number
 
-			error("First parameter not a number! Please use 'java Sortierung (int)number [insert|merge [auf|ab|rand]]'");
-
-		}
-
-		if (args.length == 1) {
-
-			sortingType = "merge";
-			fillingType = "rand";
+			error("First parameter not a number! " + VALID_PARAMETER_MESSAGE);
 
 		}
 
-		else if (args.length == 2) {
+		String sortingType = "";	//Will store the type of how the array should be sorted
+		String fillingType = "";	//Will store the type of how the array will be initialized
 
-			if (args[1].equals("merge") || args[1].equals("insert")) {
+		if (args.length == 1) {		//Set default values if they are not specified in the parameters
+
+			sortingType = DEFAULT_SORT;
+			fillingType = DEFAULT_FILL;
+
+		}
+
+		else if (args.length == 2) {	//A second parameter is specified
+
+			if (args[1].equals(SORT_MERGE) || args[1].equals(SORT_INSERT)) {								 	//If the second parameter is a valid sort type
 
 				sortingType = args[1];
-				fillingType = "rand";
+				fillingType = DEFAULT_FILL;	
 
-			} else if (args[1].equals("auf") || args[1].equals("ab") || args[1].equals("rand")) {
+			} else if (args[1].equals(FILL_UP) || args[1].equals(FILL_DOWN) || args[1].equals(FILL_RANDOM)) {	//If the second parameter is a valid filling type
 
-				sortingType = "merge";
+				sortingType = DEFAULT_SORT;
 				fillingType = args[1];
 
-			} else {
+			} else {	//The second parameter is neither a valid sorting type nor a vaild filling type -> invalid parameter
 
-				error("No valid second parameter! Please use 'java Sortierung (int)number [insert|merge [auf|ab|rand]]'");
+				error("No valid second parameter! " + VALID_PARAMETER_MESSAGE);
 
 			}
 
-		} else {
+		} else {	//More than two parameters are specified
 
-			if (args[1].equals("merge") || args[1].equals("insert")) {
+			if (args[1].equals(SORT_MERGE) || args[1].equals(SORT_INSERT)) { 									//If the second parameter is a valid sort type
 
 				sortingType = args[1];
 
 			} else {
 
-				error("No valid second parameter! Please use 'java Sortierung (int)number [insert|merge [auf|ab|rand]]'");
+				error("No valid second parameter! " + VALID_PARAMETER_MESSAGE);
 
 			}
 
-			if (args[2].equals("auf") || args[2].equals("ab") || args[2].equals("rand")) {
+			if (args[2].equals(FILL_UP) || args[2].equals(FILL_DOWN) || args[2].equals(FILL_RANDOM)) {			//If the third parameter is a valid filling type
 
 				sortingType = args[2];
 
 			} else {
 
-				error("No valid third parameter! Please use 'java Sortierung (int)number [insert|merge [auf|ab|rand]]'");
+				error("No valid third parameter! " + VALID_PARAMETER_MESSAGE);
 
 			}
 
 		}
 
-		fillArray(array, fillingType);
-
+		fillArray(array, fillingType);	//Run method fillArray which will fill the array specified by a valid fillingType
+		
+		long tStart = 0, tEnd = 0; //Helper variables to store the start, end of System time for the sort
+		
+		tStart = System.currentTimeMillis(); 
+		
 		switch (sortingType) {
 
-		case "merge":
-
-			tStart = System.currentTimeMillis();
-			mergeSort(array);
-			tEnd = System.currentTimeMillis();
-			break;
-
-		case "insert":
-
-			tStart = System.currentTimeMillis();
-			insertionSort(array);
-			tEnd = System.currentTimeMillis();
-			break;
-
-		default:
-			error("Invalid sorting type while initializing sorting algorithm!");
-			break;
+			case SORT_MERGE:
+				mergeSort(array);
+				break;
+				
+			case SORT_INSERT:
+				insertionSort(array);
+				break;
+	
+			default:
+				error("Invalid sorting type while initializing sorting algorithm!");
+				break;
 
 		}
+
+		tEnd = System.currentTimeMillis();
 		
 		if(isSorted(array)) {
 			
@@ -116,14 +135,20 @@ public class Sortierung {
 			
 		}
 		
-		mSecs = tEnd - tStart;
+		long mSecs = tEnd - tStart; //Calculate the time (in milliseconds) how long the algorithm took to sort the array
 		
 		System.out.println("Es dauerte " + mSecs + " ms, um das Feld zu sortieren!");
 		
-		printArray(array);
+		printArray(array); //Print the sorted array
 	}
 
-	public static void insertionSort(int[] array) {
+	/**
+	 * The method to sort an array by the insertion sort algorithm
+	 * 
+	 * @param array The array to be sorted
+	 * 
+	 */
+	private static void insertionSort(int[] array) {
 
 		for (int i = 1; i < array.length; i++) {
 
@@ -144,7 +169,14 @@ public class Sortierung {
 
 	}
 
-	public static boolean isSorted(int[] array) {
+	/**
+	 * A method to test if an array is sorted in an ascending order
+	 * 
+	 * @param array The array that should be tested
+	 * 
+	 * @return True if the Array is sorted
+	 */
+	private static boolean isSorted(int[] array) {
 
 		for (int i = 0; i < array.length - 1; i++) {
 
@@ -157,6 +189,11 @@ public class Sortierung {
 
 	}
 
+	/**
+	 * A method to print an error message and exit the program
+	 * 
+	 * @param errorMsg The Error Message to be printed
+	 */
 	private static void error(String errorMsg) {
 
 		System.out.println("Error occured with message: " + errorMsg);
@@ -166,11 +203,17 @@ public class Sortierung {
 
 	}
 
+	/**
+	 * Method to fill an array specified by the method argument
+	 * 
+	 * @param array The array wich should be filled
+	 * @param method Should equal either {@code FILL_UP, FILL_DOWN, FILL_RANDOM}
+	 */
 	private static void fillArray(int[] array, String method) {
 
 		switch (method) {
 
-		case "auf":
+		case FILL_UP:		//Fills the array with values which equal their indicies
 
 			for (int i = 0; i < array.length; i++) {
 
@@ -180,7 +223,7 @@ public class Sortierung {
 
 			break;
 
-		case "ab":
+		case FILL_DOWN: 	//Fills the array with values starting from the length of the array minus 1 to 0 (array.length-1, 0) 
 
 			for (int i = 0; i < array.length; i++) {
 
@@ -190,7 +233,7 @@ public class Sortierung {
 
 			break;
 
-		case "rand":
+		case FILL_RANDOM: 	//Fills the array with random integer values
 
 			java.util.Random numberGenerator = new java.util.Random();
 
@@ -202,7 +245,7 @@ public class Sortierung {
 
 			break;
 
-		default:
+		default:			//Wrong method argument
 
 			error("No such filling method: " + "(" + method + ")");
 
@@ -212,104 +255,92 @@ public class Sortierung {
 
 	}
 
+	/**
+	 * Prints an array if its length is smaller or equal to 100
+	 * 
+	 * @param array The array that should be printed
+	 * 
+	 */
 	private static void printArray(int[] array) {
 
 		if (array.length <= 100) {
 
-			String nums = "";
-
 			for (int i = 0; i < array.length; i++) {
+				System.out.print(array[i]);
 
-				nums += array[i] + ", ";
-
+				if(i < array.length-1) {
+					System.out.print(", ");
+				}
 			}
-
-			System.out.println(nums.substring(0, nums.length() - 2));
-
+			
+			System.out.println();
 		}
 
 	}
 
+	/**
+	 * Sorts an array with the merge sort algorithm
+	 * It is used to start the recursive merge sort method
+	 * 
+	 * @param array The array which should be sorted
+	 */
 	public static void mergeSort(int[] array) {
 		int[] tmpArray = new int[array.length];
 		mergeSort(array, tmpArray, 0, array.length - 1);
 	}
 
+	/**
+	 * Sorts an array with the merge sort algorithm
+	 * It will be used recursively 
+	 * 
+	 * @param array The Array to be sorted
+	 * @param tmpArray An helper array to temporarily store the sorted values
+	 * @param left The left border in which the array should be sorted
+	 * @param right The right border in which the array should be sorted
+	 */
 	private static void mergeSort(int[] array, int[] tmpArray, int left, int right) {
 
-		if (left < right) {
+		if (left < right) { 									//Check for valid borders
 
-			int middle = (left + right) / 2;
+			int middle = (left + right) / 2; 					//Get a mid position
 
-			if (middle == left) {
-				merge(array, tmpArray, left, left, right);
+			if (middle == left) {								//Check if left border is mid position (The border should have a length of two)
+				merge(array, tmpArray, left, left, right);  	//Sorts the last two values
+				
 			} else {
 
-				mergeSort(array, tmpArray, left, middle);
-				mergeSort(array, tmpArray, middle + 1, right);
-				merge(array, tmpArray, left, middle, right);
+				mergeSort(array, tmpArray, left, middle);		//Recursive call to sort the array from left to the mid
+				mergeSort(array, tmpArray, middle + 1, right);  //Recursive call to sort the array from (mid+1) to the right
+				
+				merge(array, tmpArray, left, middle, right);	//Sorts the array (Values from left to mid should be sorted and values from mid+1 to right should be sorted)
 			}
 
 		}
 
 	}
 
-	private static void inPlaceMerge(int[] array, int left, int middleLeft, int right) {
-
-		if (array.length < 1) {
-			error("Array with zero elements!");
-		}
-
-		if (array.length == 1) {
-			return;
-		}
-
-		if (left < 0 || left >= array.length || left >= right) {
-			error("Invalid argument 'left' (" + left + ")!");
-		}
-		if (middleLeft < 0 || middleLeft >= array.length || middleLeft < left || middleLeft >= right) {
-			error("Invalid argument 'middle' ( " + left + ":" + middleLeft + ":" + right + ")!");
-		}
-		if (right < 0 || right >= array.length) {
-			error("Invalid argument 'right' (" + right + ")!");
-		}
-
-		while (left <= middleLeft + 1 && right > middleLeft) {
-
-			if (array[left] <= array[middleLeft + 1]) {
-
-				left++;
-
-			} else {
-
-				int minVal = array[middleLeft + 1];
-
-				for (int i = middleLeft + 1; i >= left + 1; i--) {
-
-					array[i] = array[i - 1];
-
-				}
-
-				array[left] = minVal;
-
-				left++;
-				middleLeft++;
-
-			}
-
-		}
-	}
-
+	/**
+	 * The algorithm to merge two sorted areas in an array LeftArea(left - middleLeft) RightArea(middleLeft+1 - right)
+	 *  
+	 * @param array The array to be sorted
+	 * @param tmpArray A helper array to store temp sorted values
+	 * @param left The Start of the left area
+	 * @param middleLeft The end of the left area
+	 * @param right The end of the right area
+	 */
 	private static void merge(int[] array, int[] tmpArray, int left, int middleLeft, int right) {
 
 		if (array.length < 1) {
 			error("Array with zero elements!");
 		}
 
-		if (array.length == 1) {
+		if (array.length == 1) { //Already sorted array with length of 1
 			return;
 		}
 
+		/*
+		 * Test for invalid Parameters
+		 */
 		if (left < 0 || left >= array.length || left >= right) {
 			error("Invalid argument 'left' (" + left + ")!");
 		}
@@ -324,7 +355,7 @@ public class Sortierung {
 		int rightIndex = middleLeft + 1;
 		int leftIndex = left;
 
-		while (leftIndex <= middleLeft && rightIndex <= right) {
+		while (leftIndex <= middleLeft && rightIndex <= right) { 
 
 			if (array[leftIndex] <= array[rightIndex]) {
 
