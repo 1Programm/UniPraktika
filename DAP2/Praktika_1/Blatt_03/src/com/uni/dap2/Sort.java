@@ -7,17 +7,17 @@ public class Sort {
 
 	public static void main(String[] args) {
 
-		if (args.length != 1) {			//Prüfen, ob eine falsche Anzahl an Übergabeparametern vorliegt
+		if (args.length != 1) {			//Pruefen, ob eine falsche Anzahl an uebergabeparametern vorliegt
 
 			if (args.length == 0) {		
 
 				long sortingTime = getSortingTime(50000);
-				System.out.println("Laufzeit für BubbleSort mit 50000 Elementen: " + sortingTime + " ms!");
+				System.out.println("Laufzeit fuer BubbleSort mit 50000 Elementen: " + sortingTime + " ms!");
 				System.exit(0);
 
-			} else {		//Fehlerbehandlung: Zu viele Übergabeparameter
+			} else {		//Fehlerbehandlung: Zu viele uebergabeparameter
 
-				error("Zu viele Übergabeparameter eingegeben! Bitte " + PROGRAM_CALL + " nutzen!");
+				error("Zu viele uebergabeparameter eingegeben! Bitte " + PROGRAM_CALL + " nutzen!");
 
 			}
 
@@ -29,27 +29,27 @@ public class Sort {
 
 			comparingTime = (Float.parseFloat(args[0])*1000);	//Speichern der vorgegebenen Zeit in Millisekunden
 
-		} catch (NumberFormatException nfe) {		//Fehlerbehandlung: Übergabeparameter keine Zahl
+		} catch (NumberFormatException nfe) {		//Fehlerbehandlung: uebergabeparameter keine Zahl
 
-			error("Übergabeparameter muss eine positive Fließkommazahl sein!");
-
-		}
-
-		if (comparingTime <= 0) {		//Fehlerbehandlung: Übergabeparameter darf nicht kleiner oder gleich Null sein
-
-			error("Bitte nur positive Fließkommazahlen übergeben!");
+			error("uebergabeparameter muss eine positive Fliesskommazahl sein!");
 
 		}
 
-		int arraySize = getFirstTimeExceed(comparingTime);		//Ermittlung der Feldgröße, bei der das erste Mal die vorgegebene Zeit überschritten wird
+		if (comparingTime <= 0) {		//Fehlerbehandlung: uebergabeparameter darf nicht kleiner oder gleich Null sein
 
-		binaryApproach(arraySize, comparingTime);		//Suche der richtigen Feldgröße per Binärer Suche
+			error("Bitte nur positive Fliesskommazahlen uebergeben!");
+
+		}
+
+		int arraySize = getFirstTimeExceed(comparingTime);		//Ermittlung der Feldgroesse, bei der das erste Mal die vorgegebene Zeit ueberschritten wird
+
+		binaryApproach(arraySize, comparingTime);		//Suche der richtigen Feldgroesse per Binaerer Suche
 
 	}
 
 	/**
 	 *
-	 * @param right Erste Feldgröße, bei der die vorgegebene Zeit überschritten wird
+	 * @param right Erste Feldgraeesse, bei der die vorgegebene Zeit ueberschritten wird
 	 * @param comparingTime Zeit, die vom Nutzer als angestrebte Sortierdauer eingegeben wurde
 	 * 
 	 * */
@@ -64,14 +64,14 @@ public class Sort {
 		
 		int arraySize = right - (right - left)/2;		//Berechnung des Wertes zwischen dem linken und dem rechten Rand
 		
-		long sortingTime = getSortingTime(arraySize);		//Ermittlung der Sortierdauer für den mittleren Wert
+		long sortingTime = getSortingTime(arraySize);		//Ermittlung der Sortierdauer fuer den mittleren Wert
 		
-		float difference = (sortingTime - comparingTime);		//Berechnung der Differenz, die zwischen der tatsächlichen und der angestrebten Zeit liegt
+		float difference = (sortingTime - comparingTime);		//Berechnung der Differenz, die zwischen der tatsaechlichen und der angestrebten Zeit liegt
 		
 		assert (arraySize >= left && arraySize <= right) : "Fehlerhafte Anordnung der Parameter left, middle, right";
 
-		while ((difference > TOLERANCE || difference * (-1) > TOLERANCE) && arraySize >= left && arraySize <= right) {		//Prüfen, ob die Attribute left, middle und right richtig gesetzt sind
-																														//Prüfen, ob die ermittelte Zeit im Toleranzbereich liegt
+		while ((difference > TOLERANCE || difference * (-1) > TOLERANCE) && arraySize >= left && arraySize <= right) {		//Pruefen, ob die Attribute left, middle und right richtig gesetzt sind
+																														//Pruefen, ob die ermittelte Zeit im Toleranzbereich liegt
 
 			if (difference > TOLERANCE) {		//Fall 1: Sortierung hat zu lange gedauert
 
@@ -87,11 +87,11 @@ public class Sort {
 
 			}
 
-			sortingTime = getSortingTime(arraySize);		//Ermittlung der neuen Sortierdauer für die neue Feldgröße
+			sortingTime = getSortingTime(arraySize);		//Ermittlung der neuen Sortierdauer fuer die neue Feldgroesse
 
 			protocol(arraySize, sortingTime);		//Ausgabe der aktuellen Werte
 			
-			if(checkForFinish(sortingTime, comparingTime)) finish(arraySize, sortingTime, comparingTime);	//Prüfen, ob aktuelle Werte bereits die Anforderungen erfüllen
+			if(checkForFinish(sortingTime, comparingTime)) finish(arraySize, sortingTime, comparingTime);	//Pruefen, ob aktuelle Werte bereits die Anforderungen erfuellen
 
 			difference = sortingTime - comparingTime;
 			
@@ -107,14 +107,14 @@ public class Sort {
 
 	/**
 	 * 
-	 * @param arraySize Die Größe des zu sortierenden Feldes
+	 * @param arraySize Die Groesse des zu sortierenden Feldes
 	 * @return Die Zeit in Millisekunden, die die Sortierung gebraucht hat
 	 * 
 	 * **/
 	
 	private static long getSortingTime(int arraySize) {
 
-		int[] array = fillArray(arraySize);		//Array wird erzeugt und absteigend befüllt
+		int[] array = fillArray(arraySize);		//Array wird erzeugt und absteigend befuellt
 
 		long start = System.currentTimeMillis();
 
@@ -153,14 +153,14 @@ public class Sort {
 
 	/**
 	 * 
-	 * @param size Größe des Feldes, welches gefüllt werden soll
-	 * @return Das befüllte Feld
+	 * @param size Groesse des Feldes, welches gefuellt werden soll
+	 * @return Das befuellte Feld
 	 * 
 	 * **/
 	
 	public static int[] fillArray(int size) {
 
-		int[] array = new int[size];		//Initialisierung eines neuen Fledes in der richtigen Größe
+		int[] array = new int[size];		//Initialisierung eines neuen Fledes in der richtigen Groesse
 
 		for (int i = 0; i < array.length; i++) {
 
@@ -189,12 +189,12 @@ public class Sort {
 	 * 
 	 * @param comparingTime Zeit, in der das Feld mit einer gewissen Toleranz sortiert werden soll
 	 * 
-	 * @return Feldgröße, bei der die Soll-Zeit das erste Mal überschritten wurde
+	 * @return Feldgroesse, bei der die Soll-Zeit das erste Mal ueberschritten wurde
 	 **/
 	
 	public static int getFirstTimeExceed(float comparingTime) {
 
-		int arraySize = 1000;		//Start der Überprüfung bei 1000 Elementen
+		int arraySize = 1000;		//Start der ueberpruefung bei 1000 Elementen
 
 		int[] array = fillArray(arraySize);		
 
@@ -208,13 +208,13 @@ public class Sort {
 
 		protocol(arraySize, mSecs);		//Ausgabe der aktuellen Werte
 		
-		if(checkForFinish(mSecs, comparingTime)) finish(arraySize, mSecs, comparingTime);	//Prüfen, ob aktuelle Werte bereits die Anforderungen erfüllen		//Prüfen, ob aktuelle Werte bereits die Anforderungen erfüllen
+		if(checkForFinish(mSecs, comparingTime)) finish(arraySize, mSecs, comparingTime);	//Pruefen, ob aktuelle Werte bereits die Anforderungen erfuellen		//Pruefen, ob aktuelle Werte bereits die Anforderungen erfuellen
 
-		while (mSecs < comparingTime) {		//Prüfen, ob die Sortierdauer die vorgegebene Zeit unterschreitet
+		while (mSecs < comparingTime) {		//Pruefen, ob die Sortierdauer die vorgegebene Zeit unterschreitet
 
-			arraySize = arraySize * 2;		//Sortierung hat zu lange gedauert, also wird die Feldgröße verdoppelt
+			arraySize = arraySize * 2;		//Sortierung hat zu lange gedauert, also wird die Feldgraeesse verdoppelt
 
-			array = fillArray(arraySize);	//Array wird vergrößert und neu befüllt
+			array = fillArray(arraySize);	//Array wird vergraeessert und neu befuellt
 
 			tStart = System.currentTimeMillis();
 
@@ -226,7 +226,7 @@ public class Sort {
 
 			protocol(arraySize, mSecs);		//Ausgabe der aktuellen Werte
 			
-			if(checkForFinish(mSecs, comparingTime)) finish(arraySize, mSecs, comparingTime);	//Prüfen, ob aktuelle Werte bereits die Anforderungen erfüllen
+			if(checkForFinish(mSecs, comparingTime)) finish(arraySize, mSecs, comparingTime);	//Pruefen, ob aktuelle Werte bereits die Anforderungen erfuellen
 
 		}
 
@@ -250,7 +250,7 @@ public class Sort {
 
 		System.out.println("");
 		System.out.println("Final values:");
-		System.out.println("Feldgröße: " + arraySize + " Elemente");
+		System.out.println("Feldgroeesse: " + arraySize + " Elemente");
 		System.out.println("Dauer: " + sortingTime + " ms (" + (float) sortingTime / 1000 + " sek)");
 		System.out.println("Vorgegebene Dauer: " + comparingTime + " ms (" + (float) comparingTime / 1000 + " sek)");
 		System.out.println("Erlaubte Toleranz: " + TOLERANCE + " ms (" + TOLERANCE / 1000 + " sek)");
